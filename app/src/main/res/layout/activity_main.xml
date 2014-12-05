@@ -11,8 +11,30 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/my_recycler_view"
         android:scrollbars="vertical"
+        android:layout_marginTop="295dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="200dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Total Budget"
+        android:id="@+id/budgetLabel"
+        android:layout_marginTop="36dp"
+        android:textColor="@color/red"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Total Spent"
+        android:id="@+id/spentLabel"
+        android:layout_below="@+id/budgetLabel"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/LawnGreen" />
 
 
 </RelativeLayout>
