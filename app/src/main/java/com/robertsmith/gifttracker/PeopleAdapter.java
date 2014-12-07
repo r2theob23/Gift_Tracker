@@ -50,15 +50,20 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
         ImageView pic = (ImageView) holder.mView.findViewById(R.id.imageView);
 
         name.setText(people.get(position).getName());
-
         budget.setText(people.get(position).getBudget());
-
         pic.setImageResource(people.get(position).getPic());
     }
 
     @Override
     public int getItemCount()
     {
-        return people.size();
+        if(people == null)
+        {
+            return 0;
+        }
+        else
+        {
+            return people.size();
+        }
     }
 }

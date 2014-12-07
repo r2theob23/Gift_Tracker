@@ -17,6 +17,7 @@ public class MainActivity extends Activity {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    ArrayList<Person> people =  new ArrayList<Person>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -29,12 +30,10 @@ public class MainActivity extends Activity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        ArrayList<Person> people = new ArrayList<Person>();
-
-        for(int i = 0; i<1; i++)
-        {
-            people.add(new Person("Jessica","$1100",R.drawable.ic_launcher));
-        }
+//        for(int i = 0; i<1; i++)
+//        {
+//            people.add(new Person("Jessica","$1100",R.drawable.ic_launcher));
+//        }
 
         mAdapter = new PeopleAdapter(people);
         mRecyclerView.setAdapter(mAdapter);
@@ -59,8 +58,37 @@ public class MainActivity extends Activity {
         if (id == R.id.action_new)
         {
             Intent intent = new Intent(this, AddPersonActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent, 0);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == 0)
+        {
+            String name = data.getStringExtra("NAME");
+            String budget = data.getStringExtra("BUDGET");
+
+            if(people != null)
+            {
+                people.add(new Person(name, budget, R.drawable.ic_launcher));
+                mAdapter.notifyDataSetChanged();
+            }
+            else
+            {
+                people = new ArrayList<Person>();
+                people.add(new Person(name, budget, R.drawable.ic_launcher));
+                mAdapter.notifyDataSetChanged();
+            }
+        }
+
+    }
+    public void refresh()
+    {
+       mAdapter.notifyDataSetChanged();
     }
 }
