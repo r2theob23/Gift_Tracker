@@ -2,8 +2,12 @@ package com.robertsmith.gifttracker;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
+import android.media.Image;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Contacts;
+import android.provider.MediaStore;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -72,10 +76,11 @@ public class MainActivity extends Activity {
         {
             String name = data.getStringExtra("NAME");
             String budget = data.getStringExtra("BUDGET");
+            String pic = data.getStringExtra("PIC");
 
             if(people != null)
             {
-                people.add(new Person(name, budget, R.drawable.ic_launcher));
+                people.add(new Person(name, budget, pic));
                 mAdapter.notifyDataSetChanged();
             }
             else
@@ -87,8 +92,20 @@ public class MainActivity extends Activity {
         }
 
     }
-    public void refresh()
+
+    public String getPath(Uri uri)
     {
-       mAdapter.notifyDataSetChanged();
+        // try to retrieve the image from the media store first
+        // this will only work for images selected from gallery
+        String[] projection = {MediaStore.Images.Media.DATA};
+        Cursor cursor = managedQuery(uri, projection, null, null, null);
+        if( cursor != null )
+        {
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        }
+        // this is our fallback here
+        return uri.getPath();
     }
 }

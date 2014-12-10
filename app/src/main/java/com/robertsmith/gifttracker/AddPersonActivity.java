@@ -2,6 +2,7 @@ package com.robertsmith.gifttracker;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -11,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.robertsmith.gifttracker.R;
@@ -21,8 +23,11 @@ public class AddPersonActivity extends Activity
 {
     private EditText nameTF;
     private EditText budgetTF;
+    private ImageView pic;
     private Button cameraButton;
     private Uri imageUri;
+    private String selectedImagePath;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -33,17 +38,19 @@ public class AddPersonActivity extends Activity
         //Text Fields that gather person data
         nameTF = (EditText) findViewById(R.id.nameTF);
         budgetTF = (EditText) findViewById(R.id.budgetTF);
+        pic = (ImageView) findViewById(R.id.imageView);
 
         cameraButton = (Button) findViewById(R.id.camera);
-        cameraButton.setOnClickListener(new View.OnClickListener() {
+
+        cameraButton.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-                File photo = new File(Environment.getExternalStorageDirectory(),  "Pic.jpg");
-                intent.putExtra(MediaStore.EXTRA_OUTPUT,
-                        Uri.fromFile(photo));
-                imageUri = Uri.fromFile(photo);
-                startActivityForResult(intent, 1);
+            public void onClick(View v)
+            {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1);
             }
         });
 
@@ -72,10 +79,15 @@ public class AddPersonActivity extends Activity
             {
                 String name = nameTF.getText().toString();
                 String budget = budgetTF.getText().toString();
+                String picURI = selectedImagePath;
 
                 Intent intent = new Intent();
                 intent.putExtra("NAME", name);
                 intent.putExtra("BUDGET", budget);
+                if (picURI != null)
+                {
+                    intent.putExtra("PIC", picURI);
+                }
 
                 setResult(0, intent);
 
@@ -93,12 +105,32 @@ public class AddPersonActivity extends Activity
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 1)
+        if (resultCode == RESULT_OK)
         {
-            if (resultCode == Activity.RESULT_OK)
+            if (requestCode == 1)
             {
-
+                Uri selectedImageUri = data.getData();
+                selectedImagePath = getPath(selectedImageUri);
+                pic.setImageURI(selectedImageUri);
             }
         }
+
     }
+
+    public String getPath(Uri uri)
+    {
+        // try to retrieve the image from the media store first
+        // this will only work for images selected from gallery
+        String[] projection = {MediaStore.Images.Media.DATA};
+        Cursor cursor = managedQuery(uri, projection, null, null, null);
+        if( cursor != null )
+        {
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        }
+        // this is our fallback here
+        return uri.getPath();
+    }
+
 }

@@ -1,5 +1,7 @@
 package com.robertsmith.gifttracker;
 
+import android.net.Uri;
+
 /**
  * Created by robertsmith on 12/4/14.
  */
@@ -7,7 +9,7 @@ public class Person
 {
     String name;
     String budget;
-    int pic;
+    Uri pic;
 
     public String getName() {
         return name;
@@ -17,11 +19,11 @@ public class Person
         return budget;
     }
 
-    public int getPic() {
+    public Uri getPic() {
         return pic;
     }
 
-    public Person(String name, String budget, int pic) {
+    public Person(String name, String budget, Uri pic) {
         this.name = name;
         this.budget = budget;
         this.pic = pic;
