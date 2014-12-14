@@ -1,12 +1,14 @@
-package com.robertsmith.gifttracker;
+package com.robertsmith.gifttracker.Activities;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,11 +18,13 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.robertsmith.gifttracker.R;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 
 public class AddPersonActivity extends Activity
 {
+    private Context context;
     private EditText nameTF;
     private EditText budgetTF;
     private ImageView pic;
@@ -28,12 +32,15 @@ public class AddPersonActivity extends Activity
     private Uri imageUri;
     private String selectedImagePath;
 
+    public int GALLERY_REQUEST_CODE = 1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_person);
+        setTitle("Add Person");
 
         //Text Fields that gather person data
         nameTF = (EditText) findViewById(R.id.nameTF);
@@ -50,7 +57,7 @@ public class AddPersonActivity extends Activity
                 Intent intent = new Intent();
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1);
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), GALLERY_REQUEST_CODE);
             }
         });
 
@@ -75,18 +82,17 @@ public class AddPersonActivity extends Activity
         int id = item.getItemId();
         if (id == R.id.action_accept)
         {
-            if(nameTF.getText() != null && budgetTF.getText() != null)
+            if(!nameTF.getText().toString().equals("") && !budgetTF.getText().toString().equals(""))
             {
                 String name = nameTF.getText().toString();
                 String budget = budgetTF.getText().toString();
-                String picURI = selectedImagePath;
 
                 Intent intent = new Intent();
                 intent.putExtra("NAME", name);
                 intent.putExtra("BUDGET", budget);
-                if (picURI != null)
+                if (imageUri != null)
                 {
-                    intent.putExtra("PIC", picURI);
+                    intent.putExtra("URI", imageUri.toString());
                 }
 
                 setResult(0, intent);
@@ -107,11 +113,11 @@ public class AddPersonActivity extends Activity
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK)
         {
-            if (requestCode == 1)
+            if (requestCode == GALLERY_REQUEST_CODE)
             {
-                Uri selectedImageUri = data.getData();
-                selectedImagePath = getPath(selectedImageUri);
-                pic.setImageURI(selectedImageUri);
+                imageUri = data.getData();
+                Log.e("Image Path",imageUri+ "--> "+imageUri.getPath());
+                Picasso.with(this).load(imageUri).into(pic);
             }
         }
 
@@ -119,8 +125,6 @@ public class AddPersonActivity extends Activity
 
     public String getPath(Uri uri)
     {
-        // try to retrieve the image from the media store first
-        // this will only work for images selected from gallery
         String[] projection = {MediaStore.Images.Media.DATA};
         Cursor cursor = managedQuery(uri, projection, null, null, null);
         if( cursor != null )
@@ -129,7 +133,6 @@ public class AddPersonActivity extends Activity
             cursor.moveToFirst();
             return cursor.getString(column_index);
         }
-        // this is our fallback here
         return uri.getPath();
     }
 

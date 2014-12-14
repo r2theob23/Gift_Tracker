@@ -4,9 +4,10 @@
     <string name="app_name">Gift Tracker</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_new">Add Person</string>
+    <string name="action_new_gift">Add Gift</string>
     <string name="title_activity_add_person">AddPersonActivity</string>
     <string name="action_settings">Settings</string>
     <string name="action_accept">Done</string>
-
+    <string name="title_activity_view_person">ViewPerson</string>
 
 </resources>

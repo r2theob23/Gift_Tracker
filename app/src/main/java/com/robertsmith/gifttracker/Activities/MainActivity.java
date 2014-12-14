@@ -1,18 +1,24 @@
-package com.robertsmith.gifttracker;
+package com.robertsmith.gifttracker.Activities;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.Contacts;
 import android.provider.MediaStore;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
+import com.robertsmith.gifttracker.Adapters.PeopleAdapter;
+import com.robertsmith.gifttracker.Data_Sources.Person;
+import com.robertsmith.gifttracker.R;
+
+import java.security.PublicKey;
 import java.util.ArrayList;
 
 
@@ -22,12 +28,23 @@ public class MainActivity extends Activity {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     ArrayList<Person> people =  new ArrayList<Person>();
+    public TextView totalBudget;
+    public TextView totalSpent;
+    public static Context context;
+    public int bud = 0;
+
+    public int ADD_ACTIVITY_REQUEST = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        totalBudget = (TextView) findViewById(R.id.budgetLabel);
+        totalSpent = (TextView) findViewById(R.id.spentLabel);
+
+        totalBudget.setText(Integer.toString(bud));
+
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         mRecyclerView.setHasFixedSize(true);
 
@@ -39,7 +56,7 @@ public class MainActivity extends Activity {
 //            people.add(new Person("Jessica","$1100",R.drawable.ic_launcher));
 //        }
 
-        mAdapter = new PeopleAdapter(people);
+        mAdapter = new PeopleAdapter(people, context);
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -62,7 +79,7 @@ public class MainActivity extends Activity {
         if (id == R.id.action_new)
         {
             Intent intent = new Intent(this, AddPersonActivity.class);
-            startActivityForResult(intent, 0);
+            startActivityForResult(intent, ADD_ACTIVITY_REQUEST);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -72,40 +89,35 @@ public class MainActivity extends Activity {
     {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == 0)
+        if(requestCode == ADD_ACTIVITY_REQUEST)
         {
-            String name = data.getStringExtra("NAME");
-            String budget = data.getStringExtra("BUDGET");
-            String pic = data.getStringExtra("PIC");
+            if(data != null)
+            {
+                String name = data.getStringExtra("NAME");
+                String budget = data.getStringExtra("BUDGET");
 
-            if(people != null)
-            {
-                people.add(new Person(name, budget, pic));
-                mAdapter.notifyDataSetChanged();
-            }
-            else
-            {
-                people = new ArrayList<Person>();
-                people.add(new Person(name, budget, R.drawable.ic_launcher));
-                mAdapter.notifyDataSetChanged();
+                int newBudget = Integer.parseInt(budget);
+
+                bud = newBudget + bud;
+                totalBudget.setText(Integer.toString(bud));
+
+
+                String pic = data.getStringExtra("URI");
+                Uri picData = Uri.parse(pic);
+
+                if(people != null)
+                {
+                    people.add(new Person(name, budget, picData));
+                    mAdapter.notifyDataSetChanged();
+                }
+                else
+                {
+                    people = new ArrayList<Person>();
+                    people.add(new Person(name, budget, picData));
+                    mAdapter.notifyDataSetChanged();
+                }
             }
         }
 
-    }
-
-    public String getPath(Uri uri)
-    {
-        // try to retrieve the image from the media store first
-        // this will only work for images selected from gallery
-        String[] projection = {MediaStore.Images.Media.DATA};
-        Cursor cursor = managedQuery(uri, projection, null, null, null);
-        if( cursor != null )
-        {
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            cursor.moveToFirst();
-            return cursor.getString(column_index);
-        }
-        // this is our fallback here
-        return uri.getPath();
     }
 }

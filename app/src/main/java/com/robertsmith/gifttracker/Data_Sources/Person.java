@@ -1,4 +1,4 @@
-package com.robertsmith.gifttracker;
+package com.robertsmith.gifttracker.Data_Sources;
 
 import android.net.Uri;
 
@@ -19,7 +19,8 @@ public class Person
         return budget;
     }
 
-    public Uri getPic() {
+    public Uri getPic()
+    {
         return pic;
     }
 
