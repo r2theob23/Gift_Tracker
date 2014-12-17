@@ -6,6 +6,8 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
+    android:background="@color/LightSlateGray"
+
     tools:context=".MainActivity">
 
     <android.support.v7.widget.RecyclerView
@@ -23,7 +25,7 @@
         android:text="Total Budget"
         android:id="@+id/budgetLabel"
         android:layout_marginTop="36dp"
-        android:textColor="@color/red"
+        android:textColor="@color/BlanchedAlmond"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
@@ -35,7 +37,7 @@
         android:id="@+id/spentLabel"
         android:layout_below="@+id/budgetLabel"
         android:layout_centerHorizontal="true"
-        android:textColor="@color/LawnGreen" />
+        android:textColor="@color/BlanchedAlmond" />
 
 
 </RelativeLayout>

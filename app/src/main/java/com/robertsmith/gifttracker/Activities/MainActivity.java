@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.robertsmith.gifttracker.Adapters.PeopleAdapter;
+import com.robertsmith.gifttracker.Data_Sources.Gift;
 import com.robertsmith.gifttracker.Data_Sources.Person;
 import com.robertsmith.gifttracker.R;
 
@@ -25,7 +26,7 @@ import java.util.ArrayList;
 public class MainActivity extends Activity {
 
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
+    public static PeopleAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     ArrayList<Person> people =  new ArrayList<Person>();
     public TextView totalBudget;
@@ -33,7 +34,7 @@ public class MainActivity extends Activity {
     public static Context context;
     public int bud = 0;
 
-    public int ADD_ACTIVITY_REQUEST = 0;
+    public int ADD_PERSON_REQUEST = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -56,7 +57,7 @@ public class MainActivity extends Activity {
 //            people.add(new Person("Jessica","$1100",R.drawable.ic_launcher));
 //        }
 
-        mAdapter = new PeopleAdapter(people, context);
+        mAdapter = new PeopleAdapter(people, this);
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -79,7 +80,7 @@ public class MainActivity extends Activity {
         if (id == R.id.action_new)
         {
             Intent intent = new Intent(this, AddPersonActivity.class);
-            startActivityForResult(intent, ADD_ACTIVITY_REQUEST);
+            startActivityForResult(intent, ADD_PERSON_REQUEST);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -89,7 +90,7 @@ public class MainActivity extends Activity {
     {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == ADD_ACTIVITY_REQUEST)
+        if(requestCode == ADD_PERSON_REQUEST)
         {
             if(data != null)
             {
@@ -107,15 +108,37 @@ public class MainActivity extends Activity {
 
                 if(people != null)
                 {
-                    people.add(new Person(name, budget, picData));
+                    people.add(new Person(name, budget, pic));
                     mAdapter.notifyDataSetChanged();
                 }
                 else
                 {
                     people = new ArrayList<Person>();
-                    people.add(new Person(name, budget, picData));
+                    people.add(new Person(name, budget, pic));
                     mAdapter.notifyDataSetChanged();
                 }
+            }
+        }
+
+        Log.e("IN Activity RESULT", "Returned to home screen!");
+        if(resultCode == 10)
+        {
+            if(data != null)
+            {
+                String name = data.getStringExtra("NAME");
+                Person p = (Person) data.getSerializableExtra("PERSON");
+                ArrayList<Gift> gifts = p.getGifts();
+                Log.e("IN BACK RESULT", "received data! "+name);
+
+                for(Person person: ((PeopleAdapter) mAdapter).getPeople())
+                {
+                    if(person.getName().equals(name))
+                    {
+                        person.setGifts(gifts);
+                    }
+                }
+                mAdapter.notifyDataSetChanged();
+
             }
         }
 

@@ -1,7 +1,9 @@
 package com.robertsmith.gifttracker.Adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.robertsmith.gifttracker.Activities.MainActivity;
 import com.robertsmith.gifttracker.Activities.ViewPerson;
@@ -24,40 +25,42 @@ import java.util.ArrayList;
 public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder>
 {
     private static ArrayList<Person> people;
+    private static Activity mActivity;
 //***************************************************************************************************
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
+    public static class ViewHolder extends RecyclerView.ViewHolder //implements View.OnClickListener
     {
         public View mView;
 
         public ViewHolder(View v)
         {
             super(v);
-            v.setOnClickListener(this);
             mView = v;
         }
 
 
-        @Override
+        //@Override
         public void onClick(View view)
         {
-            Log.e("ITEM CLICKED", people.get(getPosition()).getName() + "");
             Intent intent = new Intent(view.getContext(), ViewPerson.class);
 
-            intent.putExtra("NAME", people.get(getPosition()).getName());
-            intent.putExtra("BUDGET", people.get(getPosition()).getBudget());
-            intent.putExtra("PIC", people.get(getPosition()).getPic().toString());
+            Person p = people.get(getPosition());
+            Log.e("ITEM CLICKED", p.getName() + "");
 
-            Log.e("***********", people.get(getPosition()).getPic().toString() + "--> " + people.get(getPosition()).getPic().toString());
+            intent.putExtra("PERSON",  p);
+//            intent.putExtra("NAME", people.get(getPosition()).getName());
+//            intent.putExtra("BUDGET", people.get(getPosition()).getBudget());
+//            intent.putExtra("PIC", people.get(getPosition()).getPic().toString());
 
-
-            view.getContext().startActivity(intent);
+            ((MainActivity) mActivity).startActivityForResult(intent, 10);
 
         }
+
     }
 //***************************************************************************************************
-    public PeopleAdapter(ArrayList<Person> people, Context context)
+    public PeopleAdapter(ArrayList<Person> people, Activity activity)
     {
         this.people = people;
+        this.mActivity = activity;
     }
 //***************************************************************************************************
     @Override
@@ -69,15 +72,27 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
     }
 //***************************************************************************************************
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position)
+    public void onBindViewHolder(ViewHolder holder, final int position)
     {
         TextView name = (TextView) holder.mView.findViewById(R.id.name);
         TextView budget = (TextView) holder.mView.findViewById(R.id.budget);
-        ImageView pic = (ImageView) holder.mView.findViewById(R.id.imageView);
+        ImageView pic = (ImageView) holder.mView.findViewById(R.id.giftPic);
 
         name.setText(people.get(position).getName());
         budget.setText(people.get(position).getBudget());
-        pic.setImageURI(people.get(position).getPic());
+        pic.setImageURI(Uri.parse(people.get(position).getPic()));holder.mView.setOnClickListener(
+        new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mActivity, ViewPerson.class);
+
+                Person p = people.get(position);
+                Log.e("ITEM CLICKED", p.getName() + "");
+
+                intent.putExtra("PERSON",  p);
+                ((MainActivity) mActivity).startActivityForResult(intent, 10);
+            }
+        });
     }
 //***************************************************************************************************
     @Override
@@ -91,5 +106,9 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
         {
             return people.size();
         }
+    }
+
+    public static ArrayList<Person> getPeople() {
+        return people;
     }
 }

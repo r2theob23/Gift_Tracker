@@ -2,10 +2,8 @@ package com.robertsmith.gifttracker.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,29 +16,31 @@ import android.widget.Toast;
 import com.robertsmith.gifttracker.R;
 import com.squareup.picasso.Picasso;
 
-public class AddPersonActivity extends Activity
-{
-    private EditText nameTF;
-    private EditText budgetTF;
-    private ImageView pic;
+public class AddGift extends Activity {
+
+    private EditText productNameTF;
+    private EditText productPriceTF;
+    private EditText productStoreTF;
+    private ImageView productIV;
     private Uri imageUri;
 
-    public int GALLERY_REQUEST_CODE = 1;
+
+    public int CAMERA_REQUEST_CODE = 2;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_person);
-        setTitle("Add Person");
+        setContentView(R.layout.activity_add_gift);
+        setTitle("Add Gift");
 
-        //Text Fields that gather person data
-        nameTF = (EditText) findViewById(R.id.nameTF);
-        budgetTF = (EditText) findViewById(R.id.budgetTF);
-        pic = (ImageView) findViewById(R.id.giftPic);
+        productNameTF = (EditText) findViewById(R.id.giftName);
+        productPriceTF = (EditText) findViewById(R.id.giftPrice);
+        productStoreTF = (EditText) findViewById(R.id.giftStore);
+        productIV = (ImageView) findViewById(R.id.giftPic);
 
-//        cameraButton.setOnClickListener(new View.OnClickListener()
+//        addPicButton.setOnClickListener(new View.OnClickListener()
 //        {
 //            @Override
 //            public void onClick(View v)
@@ -48,7 +48,7 @@ public class AddPersonActivity extends Activity
 //                Intent intent = new Intent();
 //                intent.setType("image/*");
 //                intent.setAction(Intent.ACTION_GET_CONTENT);
-//                startActivityForResult(Intent.createChooser(intent, "Select Picture"), GALLERY_REQUEST_CODE);
+//                startActivityForResult(Intent.createChooser(intent, "Select Picture"), CAMERA_REQUEST_CODE);
 //            }
 //        });
     }
@@ -59,21 +59,20 @@ public class AddPersonActivity extends Activity
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK)
         {
-            if (requestCode == GALLERY_REQUEST_CODE)
+            if (requestCode == CAMERA_REQUEST_CODE)
             {
                 imageUri = data.getData();
-                Log.e("Image Path",imageUri+ "--> "+imageUri.getPath());
-                Picasso.with(this).load(imageUri).into(pic);
+                Log.e("Image Path", imageUri + "--> " + imageUri.getPath());
+                Picasso.with(this).load(imageUri).into(productIV);
             }
         }
-
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.add_person, menu);
+        getMenuInflater().inflate(R.menu.menu_add_gift, menu);
         return true;
     }
 
@@ -84,16 +83,20 @@ public class AddPersonActivity extends Activity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
         if (id == R.id.action_accept)
         {
-            if(!nameTF.getText().toString().equals("") && !budgetTF.getText().toString().equals(""))
+            if(!productNameTF.getText().toString().equals("") && !productPriceTF.getText().toString().equals(""))
             {
-                String name = nameTF.getText().toString();
-                String budget = budgetTF.getText().toString();
+                String name = productNameTF.getText().toString();
+                String budget = productPriceTF.getText().toString();
+                String store = productStoreTF.getText().toString();
 
                 Intent intent = new Intent();
                 intent.putExtra("NAME", name);
-                intent.putExtra("BUDGET", budget);
+                intent.putExtra("PRICE", budget);
+                intent.putExtra("STORE", store);
                 if (imageUri != null)
                 {
                     intent.putExtra("URI", imageUri.toString());
@@ -113,7 +116,7 @@ public class AddPersonActivity extends Activity
             Intent intent = new Intent();
             intent.setType("image/*");
             intent.setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(Intent.createChooser(intent, "Select Picture"), GALLERY_REQUEST_CODE);
+            startActivityForResult(Intent.createChooser(intent, "Select Picture"), CAMERA_REQUEST_CODE);
         }
         return super.onOptionsItemSelected(item);
     }

@@ -9,5 +9,6 @@
     <string name="action_settings">Settings</string>
     <string name="action_accept">Done</string>
     <string name="title_activity_view_person">ViewPerson</string>
+    <string name="title_activity_add_gift">AddGift</string>
 
 </resources>
