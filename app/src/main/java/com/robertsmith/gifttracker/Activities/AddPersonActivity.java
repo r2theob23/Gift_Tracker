@@ -91,7 +91,7 @@ public class AddPersonActivity extends Activity
         int id = item.getItemId();
         if (id == R.id.action_accept)
         {
-            if(!nameTF.getText().toString().equals("") && !budgetTF.getText().toString().equals(""))
+            if(!nameTF.getText().toString().equals("") && !budgetTF.getText().toString().equals("") && imageUri != null)
             {
                 String name = nameTF.getText().toString();
                 String budget = budgetTF.getText().toString();

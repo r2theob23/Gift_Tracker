@@ -93,16 +93,18 @@ public class AddGift extends Activity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_accept)
         {
-            if(!productNameTF.getText().toString().equals("") && !productPriceTF.getText().toString().equals(""))
+            if(!productNameTF.getText().toString().equals("") && !productPriceTF.getText().toString().equals("") && imageUri != null)
             {
                 String name = productNameTF.getText().toString();
                 String budget = productPriceTF.getText().toString();
                 String store = productStoreTF.getText().toString();
+                Boolean purchased = false;
 
                 Intent intent = new Intent();
                 intent.putExtra("NAME", name);
                 intent.putExtra("PRICE", budget);
                 intent.putExtra("STORE", store);
+                intent.putExtra("PURCHASED", purchased);
                 if (imageUri != null)
                 {
                     intent.putExtra("URI", imageUri.toString());

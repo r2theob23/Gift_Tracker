@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -68,10 +69,20 @@ public class GiftAdapter extends RecyclerView.Adapter<GiftAdapter.ViewHolder>
         TextView name = (TextView) holder.mView.findViewById(R.id.productName);
         TextView budget = (TextView) holder.mView.findViewById(R.id.productPrice);
         ImageView pic = (ImageView) holder.mView.findViewById(R.id.giftPicImage);
+        CheckBox box = (CheckBox) holder.mView.findViewById(R.id.checkBox);
 
         name.setText(gifts.get(position).getGiftName());
         budget.setText(gifts.get(position).getGiftPrice());
         Picasso.with(ViewPerson.mContext).load(Uri.parse(gifts.get(position).getGiftPic())).into(pic);
+        Boolean purchased = gifts.get(position).getPurchased();
+        if (purchased == false)
+        {
+            box.setChecked(false);
+        }
+        else
+        {
+            box.setChecked(true);
+        }
 
         holder.mView.setOnClickListener(
                 new View.OnClickListener() {

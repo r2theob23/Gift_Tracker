@@ -68,7 +68,7 @@ public class ViewPerson extends Activity
         Intent i = getIntent();
         if (i != null)
         {
-           mPerson = (Person)i.getSerializableExtra("PERSON");
+            mPerson = (Person)i.getSerializableExtra("PERSON");
             name = mPerson.getName();
             budget = mPerson.getBudget();
             pic = Uri.parse(mPerson.getPic());
@@ -140,6 +140,7 @@ public class ViewPerson extends Activity
                 String price = data.getStringExtra("PRICE");
                 String store = data.getStringExtra("STORE");
                 String pic = data.getStringExtra("URI");
+                Boolean purchased = data.getExtras().getBoolean("PURCHASED");
                 Uri picData = Uri.parse(pic);
 
                 if(gifts != null)
@@ -149,6 +150,7 @@ public class ViewPerson extends Activity
                     product.setGiftPrice(price);
                     product.setGiftStore(store);
                     product.setGiftPic(pic);
+                    product.setPurchased(purchased);
                     gifts.add(product);
 
                     mPerson.setGifts(gifts);

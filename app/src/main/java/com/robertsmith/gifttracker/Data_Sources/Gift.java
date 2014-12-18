@@ -13,6 +13,17 @@ public class Gift implements Serializable
     String giftPrice;
     String giftStore;
     String giftPic;
+    Boolean purchased;
+
+    public Boolean getPurchased()
+    {
+        return purchased;
+    }
+
+    public void setPurchased(Boolean purchased)
+    {
+        this.purchased = purchased;
+    }
 
     public String getGiftName() {
         return giftName;

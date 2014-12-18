@@ -21,7 +21,7 @@ public class ViewGift extends Activity
     private TextView nameTV;
     private TextView priceTV;
     private TextView storeTV;
-    private CheckBox checkBox;
+    private Boolean purchased;
     public Gift mGift;
 
 
@@ -30,12 +30,12 @@ public class ViewGift extends Activity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_gift);
+        setTitle("View Gift");
 
         imageView = (ImageView) findViewById(R.id.picIV);
         nameTV = (TextView) findViewById(R.id.nameTV);
         priceTV = (TextView) findViewById(R.id.priceTV);
         storeTV = (TextView) findViewById(R.id.storeTV);
-        checkBox = (CheckBox) findViewById(R.id.checkBox);
 
         Intent i = getIntent();
         if (i != null)
@@ -47,6 +47,7 @@ public class ViewGift extends Activity
         nameTV.setText(mGift.getGiftName());
         priceTV.setText(mGift.getGiftPrice());
         storeTV.setText(mGift.getGiftStore());
+        purchased = mGift.getPurchased();
 
     }
 
@@ -67,10 +68,9 @@ public class ViewGift extends Activity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings)
+        if (id == R.id.action_accept)
         {
-            return true;
+            mGift.setPurchased(true);
         }
 
         return super.onOptionsItemSelected(item);
