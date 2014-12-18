@@ -24,20 +24,19 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Total Budget"
         android:id="@+id/budgetLabel"
-        android:layout_marginTop="36dp"
         android:textColor="@color/BlanchedAlmond"
-        android:layout_alignParentTop="true"
+        android:layout_below="@+id/spentLabel"
         android:layout_centerHorizontal="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Total Spent"
+        android:text="Budget"
         android:id="@+id/spentLabel"
-        android:layout_below="@+id/budgetLabel"
-        android:layout_centerHorizontal="true"
-        android:textColor="@color/BlanchedAlmond" />
+        android:textColor="@color/BlanchedAlmond"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
 
 
 </RelativeLayout>

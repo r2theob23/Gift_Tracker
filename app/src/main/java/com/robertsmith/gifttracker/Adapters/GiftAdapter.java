@@ -1,15 +1,22 @@
 package com.robertsmith.gifttracker.Adapters;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.robertsmith.gifttracker.Activities.AddGift;
+import com.robertsmith.gifttracker.Activities.MainActivity;
+import com.robertsmith.gifttracker.Activities.ViewGift;
 import com.robertsmith.gifttracker.Activities.ViewPerson;
 import com.robertsmith.gifttracker.Data_Sources.Gift;
+import com.robertsmith.gifttracker.Data_Sources.Person;
 import com.robertsmith.gifttracker.R;
 import com.squareup.picasso.Picasso;
 
@@ -22,7 +29,9 @@ import java.util.ArrayList;
 public class GiftAdapter extends RecyclerView.Adapter<GiftAdapter.ViewHolder>
 
 {
-    private ArrayList<Gift> gifts;
+    private static ArrayList<Gift> gifts;
+    private static Activity mActivity;
+
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -38,9 +47,10 @@ public class GiftAdapter extends RecyclerView.Adapter<GiftAdapter.ViewHolder>
         }
     }
 
-    public GiftAdapter(ArrayList<Gift> myDataset)
+    public GiftAdapter(ArrayList<Gift> myDataset,  Activity activity)
     {
         this.gifts = myDataset;
+        mActivity = activity;
     }
 
     // Create new views (invoked by the layout manager)
@@ -53,7 +63,7 @@ public class GiftAdapter extends RecyclerView.Adapter<GiftAdapter.ViewHolder>
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position)
+    public void onBindViewHolder(ViewHolder holder, final int position)
     {
         TextView name = (TextView) holder.mView.findViewById(R.id.productName);
         TextView budget = (TextView) holder.mView.findViewById(R.id.productPrice);
@@ -62,6 +72,20 @@ public class GiftAdapter extends RecyclerView.Adapter<GiftAdapter.ViewHolder>
         name.setText(gifts.get(position).getGiftName());
         budget.setText(gifts.get(position).getGiftPrice());
         Picasso.with(ViewPerson.mContext).load(Uri.parse(gifts.get(position).getGiftPic())).into(pic);
+
+        holder.mView.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(mActivity, ViewGift.class);
+
+                        Gift g = gifts.get(position);
+                        Log.e("ITEM CLICKED", g.getGiftName() + "");
+
+                        intent.putExtra("GIFT",  g);
+                        (mActivity).startActivityForResult(intent, 10);
+                    }
+                });
 
     }
 

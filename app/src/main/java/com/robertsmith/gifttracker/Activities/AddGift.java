@@ -40,6 +40,12 @@ public class AddGift extends Activity {
         productStoreTF = (EditText) findViewById(R.id.giftStore);
         productIV = (ImageView) findViewById(R.id.giftPic);
 
+        if (imageUri == null)
+        {
+            productIV.setImageResource(R.drawable.ic_action_picture);
+        }
+
+
 //        addPicButton.setOnClickListener(new View.OnClickListener()
 //        {
 //            @Override

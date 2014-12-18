@@ -40,6 +40,11 @@ public class AddPersonActivity extends Activity
         budgetTF = (EditText) findViewById(R.id.budgetTF);
         pic = (ImageView) findViewById(R.id.giftPic);
 
+        if (imageUri == null)
+        {
+            pic.setImageResource(R.drawable.ic_action_picture);
+        }
+
 //        cameraButton.setOnClickListener(new View.OnClickListener()
 //        {
 //            @Override

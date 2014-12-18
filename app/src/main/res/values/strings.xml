@@ -10,5 +10,6 @@
     <string name="action_accept">Done</string>
     <string name="title_activity_view_person">ViewPerson</string>
     <string name="title_activity_add_gift">AddGift</string>
+    <string name="title_activity_view_gift">ViewGift</string>
 
 </resources>

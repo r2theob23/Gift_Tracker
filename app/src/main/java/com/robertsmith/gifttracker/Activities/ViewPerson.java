@@ -39,6 +39,12 @@ public class ViewPerson extends Activity
     public int ADD_GIFT_REQUEST = 0;
     public int ON_BACK_REQUEST = 10;
 
+    private String name;
+    private String budget;
+    private Uri pic;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -63,14 +69,14 @@ public class ViewPerson extends Activity
         if (i != null)
         {
            mPerson = (Person)i.getSerializableExtra("PERSON");
-//            String budget = extras.getString("BUDGET");
-//            String pic = extras.getString("PIC");
-//            Uri picData = Uri.parse(pic);
+            name = mPerson.getName();
+            budget = mPerson.getBudget();
+            pic = Uri.parse(mPerson.getPic());
 
         }
-        nameTV.setText(mPerson.getName());
-        budgetTV.setText(mPerson.getBudget());
-        Picasso.with(this).load(Uri.parse(mPerson.getPic())).into(imageView);
+        nameTV.setText(name);
+        budgetTV.setText(budget);
+        Picasso.with(this).load(Uri.parse(String.valueOf(pic))).into(imageView);
 
         if(mPerson.getGifts() == null)
         {
@@ -81,7 +87,7 @@ public class ViewPerson extends Activity
             gifts = mPerson.getGifts();
         }
 
-        mAdapter = new GiftAdapter(gifts);
+        mAdapter = new GiftAdapter(gifts, this);
         mRecyclerView.setAdapter(mAdapter);
     }
 

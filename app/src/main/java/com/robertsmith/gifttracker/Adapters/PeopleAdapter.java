@@ -80,7 +80,8 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
 
         name.setText(people.get(position).getName());
         budget.setText(people.get(position).getBudget());
-        pic.setImageURI(Uri.parse(people.get(position).getPic()));holder.mView.setOnClickListener(
+        pic.setImageURI(Uri.parse(people.get(position).getPic()));
+        holder.mView.setOnClickListener(
         new View.OnClickListener() {
             @Override
             public void onClick(View v) {
