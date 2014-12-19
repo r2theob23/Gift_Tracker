@@ -4,9 +4,10 @@ import android.net.Uri;
 
 import java.io.Serializable;
 
-/**
- * Created by robertsmith on 12/16/14.
- */
+//Robert Smith
+//Gift Tracker
+//12/2014
+
 public class Gift implements Serializable
 {
     String giftName;

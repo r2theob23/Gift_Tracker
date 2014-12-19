@@ -16,6 +16,10 @@ import android.widget.Toast;
 import com.robertsmith.gifttracker.R;
 import com.squareup.picasso.Picasso;
 
+//Robert Smith
+//Gift Tracker
+//12/2014
+
 public class AddGift extends Activity {
 
     private EditText productNameTF;

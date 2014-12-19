@@ -14,6 +14,10 @@ import com.robertsmith.gifttracker.Data_Sources.Person;
 import com.robertsmith.gifttracker.R;
 import com.squareup.picasso.Picasso;
 
+//Robert Smith
+//Gift Tracker
+//12/2014
+
 public class ViewGift extends Activity
 {
 

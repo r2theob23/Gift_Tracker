@@ -21,6 +21,9 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+//Robert Smith
+//Gift Tracker
+//12/2014
 
 public class ViewPerson extends Activity
 {
@@ -42,8 +45,6 @@ public class ViewPerson extends Activity
     private String name;
     private String budget;
     private Uri pic;
-
-
 
 
     @Override
@@ -117,6 +118,7 @@ public class ViewPerson extends Activity
         return super.onOptionsItemSelected(item);
     }
 
+    //Capture back button press and create intent for Main Activity
     @Override
     public void onBackPressed() {
         Intent data = new Intent();
@@ -130,6 +132,7 @@ public class ViewPerson extends Activity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
+        //Intent from Add Gift Activity
         super.onActivityResult(requestCode, resultCode, data);
 
         if(requestCode == ADD_GIFT_REQUEST)

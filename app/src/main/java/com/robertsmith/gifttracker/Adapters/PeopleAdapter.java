@@ -19,9 +19,10 @@ import com.robertsmith.gifttracker.R;
 
 import java.util.ArrayList;
 
-/**
- * Created by robertsmith on 12/4/14.
- */
+//Robert Smith
+//Gift Tracker
+//12/2014
+
 public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder>
 {
     private static ArrayList<Person> people;
@@ -37,29 +38,13 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
             mView = v;
         }
 
-
-        //@Override
-        public void onClick(View view)
-        {
-            Intent intent = new Intent(view.getContext(), ViewPerson.class);
-
-            Person p = people.get(getPosition());
-            Log.e("ITEM CLICKED", p.getName() + "");
-
-            intent.putExtra("PERSON",  p);
-//            intent.putExtra("NAME", people.get(getPosition()).getName());
-//            intent.putExtra("BUDGET", people.get(getPosition()).getBudget());
-//            intent.putExtra("PIC", people.get(getPosition()).getPic().toString());
-
-            ((MainActivity) mActivity).startActivityForResult(intent, 10);
-
-        }
-
     }
 //***************************************************************************************************
     public PeopleAdapter(ArrayList<Person> people, Activity activity)
     {
+        //people == DS
         this.people = people;
+        //mActivity == Main Activity
         this.mActivity = activity;
     }
 //***************************************************************************************************
@@ -74,9 +59,11 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position)
     {
+        //Assign vars to elements
         TextView name = (TextView) holder.mView.findViewById(R.id.name);
         TextView budget = (TextView) holder.mView.findViewById(R.id.budget);
         ImageView pic = (ImageView) holder.mView.findViewById(R.id.giftPic);
+
 
         name.setText(people.get(position).getName());
         budget.setText(people.get(position).getBudget());
@@ -85,11 +72,13 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
         new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //mActivity == main activity
                 Intent intent = new Intent(mActivity, ViewPerson.class);
 
                 Person p = people.get(position);
                 Log.e("ITEM CLICKED", p.getName() + "");
 
+                //pass entire object
                 intent.putExtra("PERSON",  p);
                 ((MainActivity) mActivity).startActivityForResult(intent, 10);
             }

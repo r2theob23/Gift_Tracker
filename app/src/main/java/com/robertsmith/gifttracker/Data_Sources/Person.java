@@ -7,9 +7,10 @@ import android.os.Parcelable;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-/**
- * Created by robertsmith on 12/4/14.
- */
+//Robert Smith
+//Gift Tracker
+//12/2014
+
 public class Person implements Serializable
 {
     String name;

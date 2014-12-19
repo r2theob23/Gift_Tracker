@@ -22,6 +22,9 @@ import com.robertsmith.gifttracker.R;
 import java.security.PublicKey;
 import java.util.ArrayList;
 
+//Robert Smith
+//Gift Tracker
+//12/2014
 
 public class MainActivity extends Activity {
 

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- Awesomeness -->
+
     <!-- Android style -->
     <color name="android_green">#A4C639</color>
 

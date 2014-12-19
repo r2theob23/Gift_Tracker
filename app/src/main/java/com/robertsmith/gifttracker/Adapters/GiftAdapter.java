@@ -23,16 +23,15 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-/**
- * Created by robertsmith on 12/16/14.
- */
+//Robert Smith
+//Gift Tracker
+//12/2014
 
 public class GiftAdapter extends RecyclerView.Adapter<GiftAdapter.ViewHolder>
 
 {
     private static ArrayList<Gift> gifts;
     private static Activity mActivity;
-
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -48,8 +47,10 @@ public class GiftAdapter extends RecyclerView.Adapter<GiftAdapter.ViewHolder>
         }
     }
 
+    //Activity is ViewPerson Activity
     public GiftAdapter(ArrayList<Gift> myDataset,  Activity activity)
     {
+        //<Gift> DS
         this.gifts = myDataset;
         mActivity = activity;
     }
@@ -66,11 +67,13 @@ public class GiftAdapter extends RecyclerView.Adapter<GiftAdapter.ViewHolder>
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position)
     {
+        //Assign vars to ui elements in cells
         TextView name = (TextView) holder.mView.findViewById(R.id.productName);
         TextView budget = (TextView) holder.mView.findViewById(R.id.productPrice);
         ImageView pic = (ImageView) holder.mView.findViewById(R.id.giftPicImage);
         CheckBox box = (CheckBox) holder.mView.findViewById(R.id.checkBox);
 
+        //set vars from ds
         name.setText(gifts.get(position).getGiftName());
         budget.setText(gifts.get(position).getGiftPrice());
         Picasso.with(ViewPerson.mContext).load(Uri.parse(gifts.get(position).getGiftPic())).into(pic);
@@ -85,9 +88,12 @@ public class GiftAdapter extends RecyclerView.Adapter<GiftAdapter.ViewHolder>
         }
 
         holder.mView.setOnClickListener(
-                new View.OnClickListener() {
+                new View.OnClickListener()
+                {
                     @Override
-                    public void onClick(View v) {
+                    public void onClick(View v)
+                    {
+                        //mActivity == View Person Activity
                         Intent intent = new Intent(mActivity, ViewGift.class);
 
                         Gift g = gifts.get(position);
